@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Game Creator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>AI Game Creator</h1>
+    <p>Describe your game idea, and let AI generate a concept for you!</p>
+
+    <form id="gameForm">
+      <textarea id="gameDescription" placeholder="Enter your game description..." rows="5" required></textarea><br>
+      <button type="submit">Generate Game</button>
+    </form>
+
+    <div id="gameOutput" class="output"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+#gameOutput {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+}
+pip install flask openai
+from flask import Flask, request, jsonify
+import openai
+
+app = Flask(__name__)
+
+# Set your OpenAI API key here
+openai.api_key = 'YOUR_OPENAI_API_KEY'
+
+@app.route('/generate_game', methods=['POST'])
+def generate_game():
+    description = request.json.get('description')
+    
+    # Call OpenAI's GPT-3 to generate a game idea based on the description
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=f"Generate a game concept based on this description: {description}. Include mechanics, story, and gameplay.",
+        max
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Game Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>AI Game Generator</h1>
+    <p>Describe your game idea and let AI create a concept for you!</p>
+
+    <form id="gameForm">
+      <textarea id="gameDescription" placeholder="Enter your game description..." rows="5" required></textarea><br>
+      <button type="submit">Generate Game</button>
+    </form>
+
+    <div id="gameOutput" class="output"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#gameOutput {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+}
+document.getElementById('gameForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const description = document.getElementById('gameDescription').value;
+
+    // Show loading state
+    document.getElementById('gameOutput').innerHTML = "Generating game idea...";
+
+    // Send the description to the backend
+    const response = await fetch('/generate_game', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ description })
+    });
+
+    const data = await response.json();
+
+    // Display the game concept or idea
+    document.getElementById('gameOutput').innerHTML = data.game_idea;
+});
+pip install flask openai
+from flask import Flask, request, jsonify
+import openai
+
+app = Flask(__name__)
+
+# Set your OpenAI API key here
+openai.api_key = 'YOUR_OPENAI_API_KEY'
+
+@app.route('/generate_game', methods=['POST'])
+def generate_game():
+    # Get the game description from the request body
+    description = request.json.get('description')
+
+    # Check if the description is valid
+    if not description:
+        return jsonify({"error": "Description is required"}), 400
+
+    # Call OpenAI's GPT-3 API to generate a game idea
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # Or use GPT-4 if available
+            prompt=f"Create a game concept based on this description: {description}. Include game mechanics, story, and gameplay.",
+            max_tokens=200,
+            temperature=0.7
+        )
+        
+        game_idea = response.choices[0].text.strip()
+        return jsonify({"game_idea": game_idea})
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
+web: python app.py
+Flask==2.0.1
+openai==0.10.1
+git init
+git add .
+git commit -m "Initial commit"
+heroku create my-game-generator
+git push heroku master
+heroku config:set OPENAI_API_KEY=your_openai_api_key
+heroku open
+pip install flask openai
+heroku config:set OPENAI_API_KEY=your_openai_api_key
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+python app.py
